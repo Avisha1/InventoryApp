@@ -1,32 +1,64 @@
 package com.example.android.inventoryapp;
 
-import android.content.Intent;
-import android.net.Uri;
+
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-public class EditorActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int EXISTING_ITEM_LOADER = 0;
-    private Uri mCurrentItemUri;
+
+    private ImageView mItemPictureImageView;
+    private TextView mItemNameTextView;
+    private TextView mItemPriceTextView;
+    private TextView mItemQuantityTextView;
+    private Button mIncreasePriceButton;
+    private Button mDecreasePriceButton;
+    private Button mIncreaseQuantityButton;
+    private Button mDecreaseQuantityButton;
+    private Button mContactButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        Intent intent = getIntent();
-        mCurrentItemUri = intent.getData();
 
-        if (mCurrentItemUri == null) {
-            setTitle(getString(R.string.editor_activity_title_new_item));
 
-            // Invalidate the options menu, so the "Delete" menu option can be hidden.
-            // (It doesn't make sense to delete a pet that hasn't been created yet.)
-            invalidateOptionsMenu();
-        } else {
-            setTitle(getString(R.string.editor_activity_title_edit_item));
+        getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, this);
 
-            //getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, this);
-        }
+    }
+
+    /**
+     * set button click listeners
+     */
+    private void setButtonListeners() {
+        //set listener using lambdas
+//        mIncreasePriceButton.setOnClickListener(view -> mPresenter.increasePrice());
+//        mDecreasePriceButton.setOnClickListener(view -> mPresenter.decreasePrice());
+//        mIncreaseQuantityButton.setOnClickListener(view -> mPresenter.increaseQunatity());
+//        mDecreaseQuantityButton.setOnClickListener(view -> mPresenter.decreaseQuantity());
+//        mContactButton.setOnClickListener(view -> mPresenter.emailContact());
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

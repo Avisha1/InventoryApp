@@ -1,4 +1,4 @@
-package com.example.android.inventoryapp;
+package com.example.android.inventoryapp.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.example.android.inventoryapp.R;
 import com.example.android.inventoryapp.data.InventoryContract;
 
 import org.w3c.dom.Text;
@@ -16,9 +17,9 @@ import org.w3c.dom.Text;
  * Created by avishai on 10/7/2017.
  */
 
-public class InventoryCursorAdapter extends CursorAdapter {
+public class ItemCursorAdapter extends CursorAdapter {
 
-    public InventoryCursorAdapter(Context context, Cursor c){
+    public ItemCursorAdapter(Context context, Cursor c){
         super(context, c, 0);
     }
     @Override

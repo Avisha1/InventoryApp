@@ -17,4 +17,15 @@
     <string name="empty_view_subtitle">You can upload new item anytime you want..</string>
     <!--mock data-->
 
+    <string name="new_item_image_hint">click to choose picture</string>
+    <string name="item_image">item image</string>
+    <string name="item_contact">contact email</string>
+    <string name="price_label">Price:</string>
+    <string name="plus_button_text">+</string>
+    <string name="minus_button_text">-</string>
+    <string name="quantity_label">Quantity:</string>
+    <string name="contact_button_text">contact item supplier</string>
+
+    <string name="action_delete_all_entries">Delete All Items</string>
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
 </resources>
