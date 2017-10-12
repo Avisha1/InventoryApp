@@ -16,7 +16,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditorActivity" />
-        <activity android:name=".NewItemActivity"></activity>
 
         <provider
             android:authorities="com.example.android.inventoryapp"

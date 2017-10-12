@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.android.inventoryapp.EditorActivity">
+    tools:context=".EditorActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +15,14 @@
         android:padding="@dimen/single_margin"
         >
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/half_margin"
+            android:gravity="center"
+            android:text="@string/new_item_image_hint"
+            />
 
         <ImageView
             android:id="@+id/editor_picture"
@@ -22,16 +30,53 @@
             android:layout_height="@dimen/imageview_size"
             android:layout_gravity="center"
             android:contentDescription="@string/item_image"
+            android:src="@mipmap/ic_launcher"
             />
 
+        <!--<TextView-->
+            <!--android:id="@+id/editor_name"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="@dimen/half_margin"-->
+            <!--android:focusable="false"-->
+            <!--/>-->
+
         <TextView
-            android:id="@+id/editor_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/half_margin"
             android:focusable="false"
+            android:text="@string/item_name"
             />
+
+        <EditText
+            android:id="@+id/editor_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="text"
+            android:textSize="@dimen/subtitle_text"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/half_margin"
+            android:focusable="false"
+            android:text="@string/item_contact"
+            />
+
+        <EditText
+            android:id="@+id/editor_item_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:inputType="textEmailAddress"
+            android:textSize="@dimen/subtitle_text"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,8 +91,8 @@
                 android:text="@string/price_label"
                 />
 
-            <TextView
-                android:id="@+id/editor_price"
+            <EditText
+                android:id="@+id/editor_item_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -84,8 +129,8 @@
                 android:text="@string/quantity_label"
                 />
 
-            <TextView
-                android:id="@+id/editor_quantity"
+            <EditText
+                android:id="@+id/editor_item_quantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -114,6 +159,14 @@
             android:layout_marginTop="@dimen/half_margin"
             android:text="@string/contact_button_text"
             />
+
+        <Button
+            android:id="@+id/editor_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/save_button_text"
+            android:layout_marginTop="@dimen/half_margin"/>
 
     </LinearLayout>
 

@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.inventoryapp.adapters.ItemCursorAdapter;
-import com.example.android.inventoryapp.data.InventoryContract;
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
 
 import java.io.ByteArrayOutputStream;
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewItemActivity.class);
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
                 startActivity(intent);
             }
         });
@@ -55,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
 
-                Uri currentPetUri = ContentUris.withAppendedId(InventoryContract.InventoryEntry.CONTENT_URI, id);
-                intent.setData(currentPetUri);
+                Uri currentItemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+                intent.setData(currentItemUri);
 
                 startActivity(intent);
             }
@@ -85,8 +84,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 insertDummyData();
                 return true;
             // Respond to a click on the "Delete all entries" menu option
-            case R.id.action_delete_all_entries:
-                //deleteAllPets();
+            case R.id.action_delete_item:
+
+
                 return true;
         }
         return super.onOptionsItemSelected(item);

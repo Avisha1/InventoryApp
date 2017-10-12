@@ -34,12 +34,12 @@ public class InventoryProvider extends ContentProvider {
         // should recognize. All paths added to the UriMatcher have a corresponding code to return
         // when a match is found.
 
-        // The content URI of the form "content://com.example.android.pets/pets" will map to the
+        // The content URI of the form "content://com.example.android.items/items" will map to the
         // integer code {@link #ITEMS}. This URI is used to provide access to MULTIPLE rows
         // of the inventory table.
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTORY, ITEMS);
 
-        // The content URI of the form "content://com.example.android.pets/pets/#" will map to the
+        // The content URI of the form "content://com.example.android.items/items/#" will map to the
         // integer code {@link #ITEM_ID}. This URI is used to provide access to ONE single row
         // of the inventory table.
         //
@@ -67,15 +67,15 @@ public class InventoryProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         switch (match) {
             case ITEMS:
-                // For the PETS code, query the pets table directly with the given
+                // For the ITEMS code, query the items table directly with the given
                 // projection, selection, selection arguments, and sort order. The cursor
-                // could contain multiple rows of the pets table.
+                // could contain multiple rows of the items table.
                 cursor = database.query(InventoryEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
             case ITEM_ID:
-                // For the PET_ID code, extract out the ID from the URI.
-                // For an example URI such as "content://com.example.android.pets/pets/3",
+                // For the ITEM_ID code, extract out the ID from the URI.
+                // For an example URI such as "content://com.example.android.items/items/3",
                 // the selection will be "_id=?" and the selection argument will be a
                 // String array containing the actual ID of 3 in this case.
                 //
@@ -85,7 +85,7 @@ public class InventoryProvider extends ContentProvider {
                 selection = InventoryEntry._ID + "=?";
                 selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
 
-                // This will perform a query on the pets table where the _id equals 3 to return a
+                // This will perform a query on the items table where the _id equals 3 to return a
                 // Cursor containing that row of the table.
                 cursor = database.query(InventoryEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
@@ -131,7 +131,7 @@ public class InventoryProvider extends ContentProvider {
     private Uri insertItem(Uri uri, ContentValues values) {
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        // Insert the new pet with the given values
+        // Insert the new item with the given values
         long id = database.insert(InventoryEntry.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {
@@ -139,7 +139,7 @@ public class InventoryProvider extends ContentProvider {
             return null;
         }
 
-        // Notify all listeners that the data has changed for the pet content URI
+        // Notify all listeners that the data has changed for the item content URI
         getContext().getContentResolver().notifyChange(uri, null);
 
         // Once we know the ID of the new row in the table,
@@ -185,7 +185,7 @@ public class InventoryProvider extends ContentProvider {
             case ITEMS:
                 return updateItem(uri, values, selection, selectionArgs);
             case ITEM_ID:
-                // For the PET_ID code, extract out the ID from the URI,
+                // For the ITEM_ID code, extract out the ID from the URI,
                 // so we know which row to update. Selection will be "_id=?" and selection
                 // arguments will be a String array containing the actual ID.
                 selection = InventoryEntry._ID + "=?";

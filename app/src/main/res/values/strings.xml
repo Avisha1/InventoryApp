@@ -26,6 +26,24 @@
     <string name="quantity_label">Quantity:</string>
     <string name="contact_button_text">contact item supplier</string>
 
-    <string name="action_delete_all_entries">Delete All Items</string>
+    <string name="action_delete_item">Delete Item</string>
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
+
+    <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current item [CHAR LIMIT=20] -->
+    <string name="keep_editing">Keep Editing</string>
+
+    <string name="email_text_body">Hello, we would like to order some stuff of item</string>
+    <string name="email_text_subject">order some more stuff</string>
+    <string name="email_choose_text">Send mail...</string>
+    <string name="save_button_text">Save</string>
+    <string name="editor_error_save_message">Error with saving item</string>
+    <string name="editor_success_save_message">Item saved</string>
+    <string name="editor_error_update_message">Update item failed</string>
+    <string name="editor_success_update_message">Item updated</string>
 </resources>
