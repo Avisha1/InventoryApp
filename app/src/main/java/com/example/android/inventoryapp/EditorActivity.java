@@ -36,9 +36,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int EXISTING_ITEM_LOADER = 0;
@@ -47,36 +44,25 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private Uri mCurrentItemUri;
     private boolean mItemHasChanged = false;
 
-    @BindView(R.id.editor_picture)
-    ImageView mItemPictureImageView;
-    @BindView(R.id.editor_increase_price)
-    Button mIncreasePriceButton;
-    @BindView(R.id.editor_decrease_price)
-    Button mDecreasePriceButton;
-    @BindView(R.id.editor_increase_quantity)
-    Button mIncreaseQuantityButton;
-    @BindView(R.id.editor_decrease_quantity)
-    Button mDecreaseQuantityButton;
-    @BindView(R.id.editor_contact)
-    Button mContactButton;
-    @BindView(R.id.editor_save)
-    Button mItemSaveButton;
+    private ImageView mItemPictureImageView;
+    private Button mIncreasePriceButton;
+    private Button mDecreasePriceButton;
+    private Button mIncreaseQuantityButton;
+    private Button mDecreaseQuantityButton;
+    private Button mContactButton;
+    private Button mItemSaveButton;
 
-    @BindView(R.id.editor_item_name)
-    EditText mItemName;
-    @BindView(R.id.editor_item_price)
-    EditText mItemPrice;
-    @BindView(R.id.editor_item_quantity)
-    EditText mItemQuantity;
-    @BindView(R.id.editor_item_contact)
-    EditText mItemContact;
+    private EditText mItemName;
+    private EditText mItemPrice;
+    private EditText mItemQuantity;
+    private EditText mItemContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        ButterKnife.bind(this);
+        setButtonListeners();
 
         Intent intent = getIntent();
         mCurrentItemUri = intent.getData();
@@ -87,8 +73,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             setTitle(getString(R.string.editor_activity_title_edit_item));
             getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, this);
         }
-
-        setButtonListeners();
     }
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
@@ -103,6 +87,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * set button click listeners
      */
     private void setButtonListeners() {
+
+        mItemPictureImageView = (ImageView)findViewById(R.id.editor_picture);
+        mIncreasePriceButton = (Button)findViewById(R.id.editor_increase_price);
+        mDecreasePriceButton = (Button)findViewById(R.id.editor_decrease_price);
+        mIncreaseQuantityButton = (Button)findViewById(R.id.editor_increase_quantity);
+        mDecreaseQuantityButton = (Button)findViewById(R.id.editor_decrease_quantity);
+        mContactButton = (Button)findViewById(R.id.editor_contact);
+        mItemSaveButton = (Button)findViewById(R.id.editor_save);
+
+        mItemName = (EditText)findViewById(R.id.editor_item_name);
+        mItemPrice = (EditText)findViewById(R.id.editor_item_price);
+        mItemQuantity = (EditText)findViewById(R.id.editor_item_quantity);
+        mItemContact = (EditText)findViewById(R.id.editor_item_contact);
 
         //Set touch listeners
         mItemPictureImageView.setOnTouchListener(mTouchListener);
@@ -468,8 +465,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     bitmap);
 
             mItemName.setText(name);
-            mItemPrice.setText(Integer.toString(price));
-            mItemQuantity.setText(Integer.toString(quantity));
+            mItemPrice.setText(String.valueOf(price));
+            mItemQuantity.setText(String.valueOf(quantity));
             mItemContact.setText(contact);
             mItemPictureImageView.setImageDrawable(drawable);
         }
