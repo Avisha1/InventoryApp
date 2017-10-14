@@ -2,6 +2,7 @@ package com.example.android.inventoryapp.utils;
 
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 /**
  * Created by avishai on 10/14/2017.
@@ -37,12 +38,14 @@ public final class ValidationUtils {
 
     public static Boolean isItemValidBeforeSave(EditText edtName,
                                                 EditText edtContactName, EditText edtPrice,
-                                                EditText edtQuantity) {
+                                                EditText edtQuantity,
+                                                ImageView image) {
 
         return !(TextUtils.isEmpty(edtName.getText().toString()) ||
                 TextUtils.isEmpty(edtContactName.getText().toString()) ||
                 TextUtils.isEmpty(edtPrice.getText().toString()) ||
-                TextUtils.isEmpty(edtQuantity.getText().toString())
+                TextUtils.isEmpty(edtQuantity.getText().toString()) ||
+                image.getDrawable() == null
                 );
     }
 }

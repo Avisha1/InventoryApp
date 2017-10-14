@@ -366,7 +366,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String quantityStr = mItemQuantity.getText().toString();
 
         //validate all values
-        if (!ValidationUtils.isItemValidBeforeSave(mItemName, mItemContact,mItemPrice, mItemQuantity)){
+        if (!ValidationUtils.isItemValidBeforeSave(mItemName, mItemContact,mItemPrice, mItemQuantity, mItemPictureImageView)){
 
             //put relevant message
             Toast.makeText(this, "Empty values are not allowed", Toast.LENGTH_SHORT).show();

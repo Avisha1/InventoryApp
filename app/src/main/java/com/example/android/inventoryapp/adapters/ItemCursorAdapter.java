@@ -34,10 +34,17 @@ public class ItemCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, Cursor cursor) {
 
-        // Find fields to populate in inflated template
-        TextView tvName = (TextView)view.findViewById(R.id.name);
-        TextView tvPrice = (TextView)view.findViewById(R.id.price);
-        TextView tvQuantity = (TextView)view.findViewById(R.id.quantity);
+        ViewHolder holder = (ViewHolder)view.getTag();
+        if(holder == null){
+            holder = new ViewHolder();
+            holder.name = (TextView)view.findViewById(R.id.name);
+            holder.price = (TextView)view.findViewById(R.id.price);
+            holder.quantity = (TextView)view.findViewById(R.id.quantity);
+
+            holder.sale = (Button)view.findViewById(R.id.item_sale_button);
+            holder.layout = (LinearLayout)view.findViewById(R.id.item_layout);
+            view.setTag(holder);
+        }
 
         // Extract properties from cursor
         String itemName = cursor.getString(cursor.getColumnIndexOrThrow(InventoryEntry.COLUMN_NAME));
@@ -46,24 +53,31 @@ public class ItemCursorAdapter extends CursorAdapter {
         final int item_id = cursor.getInt(cursor.getColumnIndexOrThrow(InventoryEntry._ID));
 
         // Populate fields with extracted properties
-        tvName.setText(itemName);
-        tvPrice.setText(itemPrice);
-        tvQuantity.setText(itemQuantity);
+        holder.name.setText(itemName);
+        holder.price.setText(itemPrice);
+        holder.quantity.setText(itemQuantity);
 
-        Button saleButton = (Button)view.findViewById(R.id.item_sale_button);
-        saleButton.setOnClickListener(new View.OnClickListener() {
+        holder.sale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickRowItem(v, item_id, Integer.valueOf(itemQuantity));
             }
         });
 
-        LinearLayout layout = (LinearLayout)view.findViewById(R.id.item_layout);
-        layout.setOnClickListener(new View.OnClickListener() {
+        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 listener.onClickRow(v, item_id);
             }
         });
+    }
+
+    static class ViewHolder {
+        TextView name;
+        TextView price;
+        TextView quantity;
+
+        Button sale;
+        LinearLayout layout;
     }
 }
