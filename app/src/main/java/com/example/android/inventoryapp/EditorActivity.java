@@ -1,6 +1,5 @@
 package com.example.android.inventoryapp;
 
-
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -31,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
+import com.example.android.inventoryapp.utils.ValidationUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
@@ -45,7 +45,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private static final int RESULT_LOAD_IMAGE = 403;
 
     private Uri mCurrentItemUri;
-
     private boolean mItemHasChanged = false;
 
     @BindView(R.id.editor_picture)
@@ -81,13 +80,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         Intent intent = getIntent();
         mCurrentItemUri = intent.getData();
-
         if (mCurrentItemUri == null) {
             setTitle(getString(R.string.editor_activity_title_new_item));
             invalidateOptionsMenu();
         } else {
             setTitle(getString(R.string.editor_activity_title_edit_item));
-
             getLoaderManager().initLoader(EXISTING_ITEM_LOADER, null, this);
         }
 
@@ -130,45 +127,28 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mIncreasePriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String priceAsString = mItemPrice.getText().toString();
-                int price = Integer.valueOf(priceAsString);
-
-                mItemPrice.setText(String.valueOf(++price));
+                ValidationUtils.editTextIncrease(mItemPrice);
             }
         });
 
         mDecreasePriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String priceAsString = mItemPrice.getText().toString();
-                int price = Integer.valueOf(priceAsString);
-
-                if (price == 0)
-                    return;
-
-                mItemPrice.setText(String.valueOf(--price));
+                ValidationUtils.editTextDecrease(mItemPrice);
             }
         });
 
         mIncreaseQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String priceAsString = mItemQuantity.getText().toString();
-                int price = Integer.valueOf(priceAsString);
-                mItemQuantity.setText(String.valueOf(++price));
+                ValidationUtils.editTextIncrease(mItemQuantity);
             }
         });
 
         mDecreaseQuantityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String priceAsString = mItemQuantity.getText().toString();
-                int price = Integer.valueOf(priceAsString);
-
-                if (price == 0)
-                    return;
-
-                mItemQuantity.setText(String.valueOf(--price));
+                ValidationUtils.editTextDecrease(mItemQuantity);
             }
         });
 
@@ -274,7 +254,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
 
             case R.id.action_delete_item:
-
+                showDeleteConfirmationDialog();
                 return true;
 
             case android.R.id.home:
@@ -302,6 +282,39 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteItem() {
+        if (mCurrentItemUri != null) {
+            getContentResolver().delete(mCurrentItemUri, null, null);
+            finish();
+        }
+    }
+
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_delete_message);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the item.
+                deleteItem();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the item.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void showUnsavedChangesDialog(
@@ -352,16 +365,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         String itemName = mItemName.getText().toString();
         String itemContact = mItemContact.getText().toString();
-        int itemPrice = Integer.valueOf(mItemPrice.getText().toString());
-        int itemQuantity = Integer.valueOf(mItemQuantity.getText().toString());
+        String priceStr = mItemPrice.getText().toString();
+        String quantityStr = mItemQuantity.getText().toString();
 
-        //TBD
         //validate all values
-        if(TextUtils.isEmpty(itemName) || TextUtils.isEmpty(itemContact)){
+        if (!ValidationUtils.isItemValidBeforeSave(mItemName, mItemContact,mItemPrice, mItemQuantity)){
 
             //put relevant message
+            Toast.makeText(this, "Empty values are not allowed", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        int itemPrice = Integer.valueOf(priceStr);
+        int itemQuantity = Integer.valueOf(quantityStr);
 
         //get the byte array out of the drawable
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -375,9 +391,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         cv.put(InventoryEntry.COLUMN_PRICE, itemPrice);
         cv.put(InventoryEntry.COLUMN_PICTURE, stream.toByteArray());
 
-
         if (mCurrentItemUri == null) {
-
             Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, cv);
 
             // Show a toast message depending on whether or not the insertion was successful.
@@ -389,9 +403,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Otherwise, the insertion was successful and we can display a toast.
                 Toast.makeText(this, R.string.editor_success_save_message,
                         Toast.LENGTH_SHORT).show();
+                finish();
             }
         } else {
-
             int rowsAffected = getContentResolver().update(mCurrentItemUri, cv, null, null);
 
             // Show a toast message depending on whether or not the update was successful.
@@ -403,6 +417,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Otherwise, the update was successful and we can display a toast.
                 Toast.makeText(this, R.string.editor_success_update_message,
                         Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
@@ -467,7 +482,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mItemQuantity.setText("");
         mItemContact.setText("");
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         Bitmap bitmap = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.mipmap.ic_launcher);
         Drawable drawable = new BitmapDrawable(getResources(),
                 bitmap);

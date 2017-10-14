@@ -16,15 +16,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.inventoryapp.adapters.ItemCursorAdapter;
 import com.example.android.inventoryapp.data.InventoryContract.InventoryEntry;
+import com.example.android.inventoryapp.listeners.CursorClickListener;
 
 import java.io.ByteArrayOutputStream;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, CursorClickListener {
 
     private ItemCursorAdapter mAdapter;
 
@@ -48,18 +48,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ListView inventoryListView = (ListView) findViewById(R.id.list);
         View emptyView = findViewById(R.id.empty_view);
         inventoryListView.setEmptyView(emptyView);
-
-        inventoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-
-                Uri currentItemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
-                intent.setData(currentItemUri);
-
-                startActivity(intent);
-            }
-        });
 
         mAdapter = new ItemCursorAdapter(this, null);
         inventoryListView.setAdapter(mAdapter);
@@ -93,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void insertDummyData(){
-
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_NAME, "Dummy data");
         values.put(InventoryEntry.COLUMN_ORDER_CONTACT_EMAIL, "DummyEmail@gmail.com");
@@ -107,6 +94,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         values.put(InventoryEntry.COLUMN_PICTURE, stream.toByteArray());
 
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+    }
+
+    @Override
+    public void onClickRow(View view, int id) {
+        Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+
+        Uri currentItemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+        intent.setData(currentItemUri);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickRowItem(View view, int id, int value) {
+        //Prevent going below zero
+        if(value == 0)
+            return;
+
+        Uri currentItemUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
+        ContentValues cv = new ContentValues();
+        cv.put(InventoryEntry.COLUMN_QUANTITY, --value);
+
+        getContentResolver().update(currentItemUri, cv, null, null);
     }
 
     @Override

@@ -33,15 +33,6 @@
             android:src="@mipmap/ic_launcher"
             />
 
-        <!--<TextView-->
-            <!--android:id="@+id/editor_name"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginTop="@dimen/half_margin"-->
-            <!--android:focusable="false"-->
-            <!--/>-->
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:focusable="false"
                 android:text="@string/price_label"
                 />
 
@@ -98,6 +90,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:inputType="number"
                 android:textSize="@dimen/subtitle_text"/>
 
             <Button
@@ -126,6 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:focusable="false"
                 android:text="@string/quantity_label"
                 />
 
@@ -136,6 +130,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:inputType="number"
                 android:textSize="@dimen/subtitle_text"/>
 
             <Button

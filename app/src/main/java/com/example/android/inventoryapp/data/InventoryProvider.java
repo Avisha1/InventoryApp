@@ -34,7 +34,7 @@ public class InventoryProvider extends ContentProvider {
         // should recognize. All paths added to the UriMatcher have a corresponding code to return
         // when a match is found.
 
-        // The content URI of the form "content://com.example.android.items/items" will map to the
+        // The content URI of the form "content://com.example.android.inventoryapp/items" will map to the
         // integer code {@link #ITEMS}. This URI is used to provide access to MULTIPLE rows
         // of the inventory table.
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTORY, ITEMS);
@@ -44,7 +44,7 @@ public class InventoryProvider extends ContentProvider {
         // of the inventory table.
         //
         // In this case, the "#" wildcard is used where "#" can be substituted for an integer.
-        // For example, "content://com.example.android.inventory/items/3" matches, but
+        // For example, "content://com.example.android.inventoryapp/items/3" matches, but
         // "content://com.example.android.inventory/items" (without a number at the end) doesn't match.
         sUriMatcher.addURI(InventoryContract.CONTENT_AUTHORITY, InventoryContract.PATH_INVENTORY + "/#", ITEM_ID);
     }
@@ -75,7 +75,7 @@ public class InventoryProvider extends ContentProvider {
                 break;
             case ITEM_ID:
                 // For the ITEM_ID code, extract out the ID from the URI.
-                // For an example URI such as "content://com.example.android.items/items/3",
+                // For an example URI such as "content://com.example.android.inventoryapp/items/3",
                 // the selection will be "_id=?" and the selection argument will be a
                 // String array containing the actual ID of 3 in this case.
                 //

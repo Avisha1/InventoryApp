@@ -46,4 +46,9 @@
     <string name="editor_success_save_message">Item saved</string>
     <string name="editor_error_update_message">Update item failed</string>
     <string name="editor_success_update_message">Item updated</string>
+
+    <!-- Delete dialog message strings -->
+    <string name="dialog_delete_message">Delete this item?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>
